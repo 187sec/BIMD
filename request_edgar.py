@@ -78,6 +78,7 @@ def segmentITEM1_1A_7(string):
     regex_item1 = 'I[tT][Ee][Mm]\s*1[.\s]'
     regex_item1A = 'I[tT][Ee][Mm]\s*1A[.\s]'
     regex_item1B = 'I[tT][Ee][Mm]\s*1B[.\s]'
+    regex_item2 = 'I[tT][Ee][Mm]\s*2[.\s]'
     regex_item7 = 'I[tT][Ee][Mm]\s*7[.\s]'
     regex_item8 = 'I[tT][Ee][Mm]\s*8[.\s]'
 
@@ -129,7 +130,16 @@ def segmentITEM1_1A_7(string):
         item1B_start = match.span()[0]
         if item1B_start > item1A_start:
             print("item1B, item1A: ", item1B_start, item1A_start)
-            break
+
+    if item1B_start == 0:    
+	    # 1B start point
+	    done = False
+	    itr = re.finditer(regex_item2, string)
+	    for match in itr:
+	        item1B_start = match.span()[0]
+	        if item1B_start > item1A_start:
+	            print("item1B, item1A: ", item1B_start, item1A_start)
+	            break
         
     # 7 start point
     done = False
@@ -164,8 +174,8 @@ def getRecentFileTable(company_list):
     
     for testing, set file number to be 3 and max number of company to be 20
     """
-    n_file = 2
-    # max_n_company = 10
+    n_file = 100
+    # max_n_company = 3
     
     comp_count = 0
     tenK_count = 0
@@ -202,4 +212,4 @@ table = getRecentFileTable(company_list)
 
 
 df = pd.DataFrame(table)
-df.to_pickle("10-K_for_snp500.csv")
+df.to_pickle("10-K_for_snp500.pkl")
